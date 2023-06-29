@@ -46,7 +46,7 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 			log.Printf("An error was raised marshalling request data. %v", err)
 			return err
 		}
-
+		fmt.Printf("string(b): %v\n", string(b))
 		// log.Printf("Sending post request to validate token and app for token %s, customer id %s and app secret %s", jti, customerID, appSecret)
 
 		if req, err = http.NewRequest(r.HttpMethod, r.EndpointUrl, bytes.NewBuffer(b)); err == nil {
@@ -62,7 +62,7 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 				statuscode = res.StatusCode
 				log.Printf("Received statuscode %d", statuscode)
 				switch statuscode {
-				case http.StatusOK, http.StatusCreated:
+				case http.StatusOK, http.StatusCreated, http.StatusAccepted:
 					err = json.Unmarshal(body, &r.ResponseData)
 					if err != nil {
 						log.Printf("Error unmarshaling token information received from api: %+v", err)

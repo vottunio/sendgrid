@@ -14,7 +14,7 @@ const (
 	CONTENT_TYPE   string = "Content-Type"
 	AUTH_APP_ID    string = "x-application-vkn"
 	AUTHORIZATION  string = "Authorization"
-	MIME_TYPE_JSON string = "application/json; charset=UTF-8"
+	MIME_TYPE_JSON string = "application/json"
 )
 
 type ContactDTO struct {
