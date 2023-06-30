@@ -20,8 +20,7 @@ const (
 )
 
 type ErrorDTO struct {
-	Code string `json:"code"`
-
+	Code    string `json:"code"`
 	Message string `json:"message"`
 }
 
@@ -46,8 +45,6 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 			log.Printf("An error was raised marshalling request data. %v", err)
 			return err
 		}
-		fmt.Printf("string(b): %v\n", string(b))
-		// log.Printf("Sending post request to validate token and app for token %s, customer id %s and app secret %s", jti, customerID, appSecret)
 
 		if req, err = http.NewRequest(r.HttpMethod, r.EndpointUrl, bytes.NewBuffer(b)); err == nil {
 			setReqHeaders(req, r.TokenAuth)
