@@ -21,3 +21,5 @@
 go.work
 
 *.code-workspace
+
+constants_test.go

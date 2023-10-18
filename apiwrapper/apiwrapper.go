@@ -6,10 +6,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/vottunio/log"
 )
 
 const (
@@ -20,7 +21,8 @@ const (
 )
 
 type ErrorDTO struct {
-	Code    string `json:"code"`
+	Code string `json:"code"`
+
 	Message string `json:"message"`
 }
 
@@ -42,7 +44,7 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 	if _, err := url.Parse(r.EndpointUrl); err == nil {
 		b, err := json.Marshal(r.RequestData)
 		if err != nil {
-			log.Printf("An error was raised marshalling request data. %v", err)
+			log.Errorf("An error was raised marshalling request data. %v", err)
 			return err
 		}
 
@@ -62,7 +64,7 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 				case http.StatusOK, http.StatusCreated, http.StatusAccepted:
 					err = json.Unmarshal(body, &r.ResponseData)
 					if err != nil {
-						log.Printf("Error unmarshaling token information received from api: %+v", err)
+						log.Errorf("Error unmarshaling token information received from api: %+v", err)
 						return errors.New(ErrorParsingJson)
 					}
 					return nil
@@ -74,17 +76,17 @@ func RequestApiEndpoint(r *RequestApiEndpointInfo, setReqHeaders SetReqHeaders) 
 					errorMsg := ErrorDTO{}
 					err := json.Unmarshal(body, &errorMsg)
 					if err != nil {
-						log.Printf("Error unmarshaling token information received from api: %+v", err)
+						log.Errorf("Error unmarshaling token information received from api: %+v", err)
 						return fmt.Errorf(ErrorHttpStatus, statuscode)
 					}
 					return errors.New(errorMsg.Code)
 				}
 			} else {
-				log.Printf("error executing request with error %+v", err)
+				log.Errorf("error executing request with error %+v", err)
 				return err
 			}
 		} else {
-			log.Printf("error creating request to send to server %+v", err)
+			log.Errorf("error creating request to send to server %+v", err)
 			return err
 		}
 	} else {
